@@ -12,28 +12,32 @@ public class Company extends Customer {
         this.companyOverdraftDiscount = companyOverdraftDiscount;
     }
 
-    @Override
+    public void withdrawWithPremium(final Money money) {
+        if (account.isOverdraft()) {
+            account.substract(Money.newInstance(
+                    money.getAmount() + money.getAmount() * account.overdraftFee() * companyOverdraftDiscount / 2,
+                    money.getCurrency()));
+        } else {
+            account.substract(Money.newInstance(money.getAmount(), money.getCurrency()));
+        }
+    }
+    public void withdrawWithoutPremium(final Money money) {
+        if (account.isOverdraft()) {
+            account.substract(Money.newInstance(
+                    money.getAmount() + money.getAmount() * account.overdraftFee() * companyOverdraftDiscount,
+                    money.getCurrency()));
+        } else {
+            account.substract(Money.newInstance(money.getAmount(), money.getCurrency()));
+        }
+    }
+
+
+        @Override
     public void withdraw(final Money money) {
         if (account.getType().isPremium()) {
-            if (account.isOverdraft()) {
-
-                // 50 percent discount for overdraft for premium account
-                account.substract(Money.newInstance(
-                        money.getAmount() + money.getAmount() * account.overdraftFee() * companyOverdraftDiscount / 2,
-                        money.getCurrency()));
-            } else {
-                account.substract(Money.newInstance(money.getAmount(), money.getCurrency()));
-            }
+           withdrawWithPremium(money);
         } else {
-            if (account.isOverdraft()) {
-
-                // no discount for overdraft for not premium account
-                account.substract(Money.newInstance(
-                        money.getAmount() + money.getAmount() * account.overdraftFee() * companyOverdraftDiscount,
-                        money.getCurrency()));
-            } else {
-                account.substract(Money.newInstance(money.getAmount(), money.getCurrency()));
-            }
+           withdrawWithoutPremium(money);
         }
     }
 
