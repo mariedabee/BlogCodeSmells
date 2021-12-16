@@ -30,7 +30,7 @@ public class Account {
     }
 
     private double overdraftCharge() {
-        if (type.isPremium()) {
+        if (isPremium()) {
             double result = 10;
             if (getDaysOverdrawn() > 7) {
                 result += (getDaysOverdrawn() - 7) * 1.0;
@@ -43,10 +43,17 @@ public class Account {
     }
 
     public double overdraftFee() {
-        if (type.isPremium()) {
+        if (isPremium()) {
             return 0.10;
         } else {
             return 0.20;
+        }
+    }
+    public boolean isPremium() {
+        if (this.type.equals("Premium")){
+            return true;
+        }else {
+            return false;
         }
     }
 

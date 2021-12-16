@@ -34,7 +34,7 @@ public class Company extends Customer {
 
         @Override
     public void withdraw(final Money money) {
-        if (account.getType().isPremium()) {
+        if (account.isPremium()) {
            withdrawWithPremium(money);
         } else {
            withdrawWithoutPremium(money);
