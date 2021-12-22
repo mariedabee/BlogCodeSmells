@@ -12,6 +12,7 @@ public class Company extends Customer {
         this.companyOverdraftDiscount = companyOverdraftDiscount;
     }
 
+    //50 precent discount for overdraft for remium account
     public void withdrawWithPremium(final Money money) {
         if (account.isOverdraft()) {
             account.substract(Money.newInstance(
